@@ -1,0 +1,71 @@
+---
+title: "ggplot Assignment"
+author: "GABA FOLLY NAPO"
+format: html
+editor: visual
+---
+
+## Quarto
+
+Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
+
+## Running Code
+
+When you click the **Render** button a document will be generated that includes both content and the output of embedded code. You can embed code like this:
+
+```{r setup, include=FALSE, ech=TRUE}
+library(tidyverse)
+library(ggplot2)
+library(ggthemes)
+library(dplyr)
+library(ggrepel)
+library(viridis)
+library(geomtextpath)
+```
+
+*Description*
+
+Data to examine the correlation between the level of prostate-specific antigen and a number of clinical measures in men who were about to receive a radical prostatectomy. A data frame with 97 observations on the following 10 variables
+
+*Data visualization (make a Figure)*
+
+```{r}
+## Upload a data 
+
+Prostat=read.csv("C:/Users/L/OneDrive/Bureau/STAA 566/ggplot slide/prostate.csv",header = TRUE)
+
+## make a plot
+pro <- ggplot(data = Prostat,
+            mapping = aes(x = lcavol,
+                          y = lpsa,
+                          color=lweight))+
+  geom_point(aes(size=age), 
+                          alpha=.5, 
+                          shape=16)
+  
+Pro = pro + geom_smooth(method = "loess", aes(color=lweight))+
+  theme_minimal()+ ylab("log(prostate specific antigen)") + 
+  xlab("log(cancer volume)")+ 
+  theme_tufte(base_size=12, 
+                           base_family = "sans")+
+  guides(size=guide_legend(title="Age (Years)"),
+                      color="none")+
+  theme(legend.position = c(0.87, 0.25))
+
+Pro = Pro + scale_color_viridis(discrete = FALSE) + ggtitle("level of prostate-specific antigen  by Cancer volume")
+
+```
+
+*Save figure as PDF*
+
+```{r}
+pdf("ggplot_assignmnent.pdf", height=4, width=6)
+print(Pro)
+dev.off()
+```
+
+*Display Figure in HTLM*
+
+```{r}
+Pro
+```
